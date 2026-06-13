@@ -3,15 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Formula 1 · Vizualizacija podataka 2000–2024</title>
-
-<!-- Font Inter (Google Fonts): https://fonts.google.com/specimen/Inter -->
+<title>Formula 1 - Vizualizacija podataka 2000–2024</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-
-<!-- D3.js v7 - biblioteka za vizualizaciju: https://d3js.org/ -->
 <script src="https://d3js.org/d3.v7.min.js"></script>
-
-<!-- topojson-client - dekodiranje TopoJSON geometrije u GeoJSON: https://github.com/topojson/topojson-client -->
 <script src="https://cdn.jsdelivr.net/npm/topojson-client@3/dist/topojson-client.min.js"></script>
 <style>
 :root {
@@ -29,6 +23,7 @@
 html { scroll-behavior: smooth; }
 body { background: var(--bg); color: var(--text); font-family: var(--font); font-size: 14px; line-height: 1.5; }
 
+/* ── HEADER ── */
 header {
   padding: 1.5rem 2.5rem;
   border-bottom: 1px solid var(--line);
@@ -41,14 +36,18 @@ header {
 .h-sub { font-size: .8rem; color: var(--muted); margin-top: .1rem; }
 .h-right { margin-left: auto; font-size: .75rem; color: var(--muted); text-align: right; line-height: 1.7; }
 
+/* ── MAIN ── */
 main { max-width: 1600px; margin: 0 auto; padding: 2rem 2.5rem 4rem; display: flex; flex-direction: column; gap: 2rem; }
 
+/* ── SECTION ── */
 .sec-head { display: flex; align-items: baseline; gap: .8rem; margin-bottom: .8rem; }
 .sec-title { font-size: .95rem; font-weight: 600; color: var(--text); }
 .sec-tag { font-size: .7rem; font-weight: 500; color: var(--muted); background: var(--line); padding: .15rem .5rem; border-radius: 3px; letter-spacing: .04em; text-transform: uppercase; }
 
+/* ── CARD ── */
 .card { background: var(--card); border: 1px solid var(--line); border-radius: 6px; padding: 1.2rem 1.4rem; }
 
+/* ── CONTROLS ── */
 .ctrl { display: flex; align-items: center; gap: .6rem; flex-wrap: wrap; margin-bottom: .9rem; }
 .ctrl label { font-size: .75rem; color: var(--muted); white-space: nowrap; }
 select, button {
@@ -65,11 +64,13 @@ select, button {
 select:hover, select:focus, button:hover { border-color: var(--red); outline: none; }
 .ctrl-div { width: 1px; height: 1rem; background: var(--line); }
 
+/* ── AXIS / GRID ── */
 .axis text { fill: var(--muted); font-family: var(--font); font-size: 11px; }
 .axis line, .axis path { stroke: var(--line); }
 .axis .domain { display: none; }
 .grid line { stroke: var(--line); stroke-dasharray: 2 4; }
 
+/* ── TOOLTIP ── */
 #tip {
   position: fixed; pointer-events: none;
   background: rgba(10,10,14,.96); border: 1px solid var(--line);
@@ -82,22 +83,27 @@ select:hover, select:focus, button:hover { border-color: var(--red); outline: no
 #tip .tr { display: flex; justify-content: space-between; gap: 1.2rem; }
 #tip .tv { color: var(--text); font-weight: 500; }
 
+/* ── LEGEND ── */
 .legend { display: flex; flex-wrap: wrap; gap: .3rem .8rem; margin-top: .8rem; }
 .li { display: flex; align-items: center; gap: .35rem; font-size: .75rem; color: var(--sub); cursor: pointer; padding: .15rem .35rem; border-radius: 3px; border: 1px solid transparent; transition: all .15s; user-select: none; }
 .li:hover { color: var(--text); border-color: var(--line); }
 .li.dim { opacity: .25; }
 .ls { width: 12px; height: 2px; border-radius: 1px; flex-shrink: 0; }
 
+/* ── 2-COL ── */
 .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1.4rem; }
 
+/* ── ANIM ── */
 .anim-row { display: flex; align-items: center; gap: .7rem; flex-wrap: wrap; margin-bottom: .7rem; }
 .prog { flex: 1; min-width: 160px; height: 3px; background: var(--line); border-radius: 2px; cursor: pointer; }
 .prog-fill { height: 100%; background: var(--red); border-radius: 2px; transition: width .3s; }
 .race-lbl { font-size: .78rem; color: var(--gold); min-width: 160px; }
 
+/* ── MAP ── */
 .country { stroke: rgba(255,255,255,.06); stroke-width: .3px; transition: opacity .12s; }
 .country:hover { stroke: rgba(255,255,255,.5); stroke-width: .8px; }
 
+/* ── BUMP ── */
 .bl { fill: none; }
 .bump-lbl { font-family: var(--font); font-size: 10.5px; dominant-baseline: middle; }
 
@@ -122,7 +128,7 @@ select:hover, select:focus, button:hover { border-color: var(--red); outline: no
 
 <main>
 
-<!-- Graf 1: linijski graf bodova vozaca po sezoni -->
+<!-- ── GRAF 1 ── -->
 <section>
   <div class="sec-head">
     <span class="sec-title">Bodovi vozača po sezoni</span>
@@ -143,7 +149,7 @@ select:hover, select:focus, button:hover { border-color: var(--red); outline: no
   </div>
 </section>
 
-<!-- Graf 2: grupirani stupcasti graf pobjeda konstruktora po sezoni -->
+<!-- ── GRAF 2 ── -->
 <section>
   <div class="sec-head">
     <span class="sec-title">Pobjede konstruktora po sezoni</span>
@@ -166,7 +172,7 @@ select:hover, select:focus, button:hover { border-color: var(--red); outline: no
   </div>
 </section>
 
-<!-- Graf 3: choropleth karta statistika po drzavama (puna sirina) -->
+<!-- ── GRAF 3 — Choropleth (cijela širina) ── -->
 <section>
   <div class="sec-head">
     <span class="sec-title">Statistike po državama</span>
@@ -190,7 +196,7 @@ select:hover, select:focus, button:hover { border-color: var(--red); outline: no
   </div>
 </section>
 
-<!-- Graf 4: bump chart poretka konstruktora kroz sezonu (puna sirina) -->
+<!-- ── GRAF 4 — Bump chart (cijela širina) ── -->
 <section>
   <div class="sec-head">
     <span class="sec-title">Poredak konstruktora kroz sezonu</span>
@@ -214,7 +220,7 @@ select:hover, select:focus, button:hover { border-color: var(--red); outline: no
   </div>
 </section>
 
-<!-- Graf 5: animirani horizontalni stupcasti graf (bar chart race) -->
+<!-- ── GRAF 5 — Animacija ── -->
 <section>
   <div class="sec-head">
     <span class="sec-title">Poredak vozačkog šampionata kroz sezonu</span>
@@ -245,10 +251,10 @@ select:hover, select:focus, button:hover { border-color: var(--red); outline: no
 </main>
 
 <script>
-// Sluzbene/prepoznatljive boje F1 konstruktora. Koriste se za bojanje svih
-// grafova kako bi isti tim uvijek imao istu boju.
-// Izvor boja: https://en.wikipedia.org/wiki/List_of_Formula_One_constructors
+// ── F1 TEAM COLOURS ─────────────────────────────────────
+// Službene/poznate boje konstruktora kroz povijest
 const TEAM_COLORS = {
+  // Trenutni timovi
   "Ferrari":              "#e8002d",
   "Red Bull":             "#3671c6",
   "Mercedes":             "#27f4d2",
@@ -259,6 +265,7 @@ const TEAM_COLORS = {
   "RB F1 Team":           "#6692ff",
   "Haas F1 Team":         "#b6babd",
   "Kick Sauber":          "#52e252",
+  // Bivši / preimenovani timovi
   "Renault":              "#ffd700",
   "Force India":          "#f596c8",
   "Racing Point":         "#f596c8",
@@ -292,72 +299,68 @@ const TEAM_COLORS = {
   "BAR-Honda":            "#c0392b",
 };
 
-// Boje vozaca - svaki vozac obojen je bojom tima s kojim se najvise povezuje.
+// Boje za top-10 vozača (po timu s kojim su najviše povezani)
 const DRIVER_COLORS = {
-  "Michael Schumacher":   "#e8002d",
-  "Lewis Hamilton":       "#27f4d2",
-  "Sebastian Vettel":     "#3671c6",
-  "Fernando Alonso":      "#ffd700",
-  "Kimi Räikkönen":       "#e8002d",
-  "Valtteri Bottas":      "#27f4d2",
-  "Mark Webber":          "#3671c6",
-  "Nico Rosberg":         "#27f4d2",
-  "Jenson Button":        "#ffffff",
-  "Rubens Barrichello":   "#e8002d",
-  "Max Verstappen":       "#3671c6",
-  "Charles Leclerc":      "#e8002d",
-  "Lando Norris":         "#ff8000",
-  "Carlos Sainz":         "#e8002d",
-  "George Russell":       "#27f4d2",
-  "Daniel Ricciardo":     "#ff8000",
-  "Romain Grosjean":      "#b6babd",
-  "Nico Hülkenberg":      "#ffd700",
-  "Sergio Pérez":         "#3671c6",
+  "Michael Schumacher":   "#e8002d",  // Ferrari
+  "Lewis Hamilton":       "#27f4d2",  // Mercedes
+  "Sebastian Vettel":     "#3671c6",  // Red Bull
+  "Fernando Alonso":      "#ffd700",  // Renault/Alpine
+  "Kimi Räikkönen":       "#e8002d",  // Ferrari
+  "Valtteri Bottas":      "#27f4d2",  // Mercedes
+  "Mark Webber":          "#3671c6",  // Red Bull
+  "Nico Rosberg":         "#27f4d2",  // Mercedes
+  "Jenson Button":        "#ffffff",  // Brawn/McLaren
+  "Rubens Barrichello":   "#e8002d",  // Ferrari
+  "Max Verstappen":       "#3671c6",  // Red Bull
+  "Charles Leclerc":      "#e8002d",  // Ferrari
+  "Lando Norris":         "#ff8000",  // McLaren
+  "Carlos Sainz":         "#e8002d",  // Ferrari
+  "George Russell":       "#27f4d2",  // Mercedes
+  "Daniel Ricciardo":     "#ff8000",  // McLaren/Red Bull
+  "Romain Grosjean":      "#b6babd",  // Haas
+  "Nico Hülkenberg":      "#ffd700",  // Renault
+  "Sergio Pérez":         "#3671c6",  // Red Bull
 };
 
-// Rezervna paleta za timove/vozace koji nisu u gornjim rjecnicima.
+// Fallback paleta za što nije pokriveno
 const PAL_FALLBACK = [
   "#e8002d","#3671c6","#27f4d2","#ff8000","#358c75",
   "#ff87bc","#64c4ff","#ffd700","#b6babd","#52e252",
   "#6692ff","#b12335","#5f8faa","#c0392b","#f596c8"
 ];
 
-// Vraca boju tima. Ako nema tocnog imena, pokusava parcijalno podudaranje
-// (npr. "Red Bull Racing" -> "Red Bull"), inace uzima boju iz rezervne palete.
+// Vrati boju za tim — pogleda TEAM_COLORS, fallback na indeks
 function teamColor(name, idx) {
   if (TEAM_COLORS[name]) return TEAM_COLORS[name];
+  // Parcijalno podudaranje (npr. "Red Bull Racing" → "Red Bull")
   const partial = Object.keys(TEAM_COLORS).find(k => name.includes(k) || k.includes(name));
   if (partial) return TEAM_COLORS[partial];
   return PAL_FALLBACK[idx % PAL_FALLBACK.length];
 }
 
+// Vrati boju za vozača
 function driverColor(name, idx) {
   if (DRIVER_COLORS[name]) return DRIVER_COLORS[name];
   return PAL_FALLBACK[idx % PAL_FALLBACK.length];
 }
 
+// Generička paleta za mjesta gdje nema konteksta tima
 const PAL = PAL_FALLBACK;
 
-// Tooltip - zajednicki skocni okvir za sve grafove.
 const tip = d3.select("#tip");
-// d3.format(",.0f") - cijeli broj s razdjelnikom tisucica: https://d3js.org/d3-format
 const fmt = d3.format(",.0f");
 function show(html, e){ tip.html(html).style("opacity",1); mv(e); }
 function mv(e){ tip.style("left",(e.clientX+14)+"px").style("top",(e.clientY-28)+"px"); }
 function hide(){ tip.style("opacity",0); }
-// Sirina kontejnera grafa (responzivnost) umanjena za padding kartice.
 function cw(id){ return (document.getElementById(id)?.parentElement?.clientWidth||700) - 48; }
 
-// Globalno stanje aplikacije.
-let D=null, W=null;                                  // D = podaci, W = TopoJSON karta
-let hidden=new Set(), cmpA=null, cmpB=null, cmpOn=false;  // stanje grafa 1
-let g4focus=null;                                    // fokusirani konstruktor (graf 4)
-let aTimer=null, aIdx=0, aRounds=[], aPlay=false;    // stanje animacije (graf 5)
+// ── STATE ───────────────────────────────────────────────
+let D=null, W=null;
+let hidden=new Set(), cmpA=null, cmpB=null, cmpOn=false;
+let g4focus=null;
+let aTimer=null, aIdx=0, aRounds=[], aPlay=false;
 
-// Paralelno ucitavanje podataka i karte svijeta.
-// Promise.all ceka oba izvora prije iscrtavanja: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise/all
-// d3.json - dohvat JSON datoteke: https://d3js.org/d3-fetch#json
-// world-atlas (countries-110m) - granice drzava u TopoJSON formatu: https://github.com/topojson/world-atlas
+// ── LOAD ────────────────────────────────────────────────
 Promise.all([
   d3.json("f1_data.json"),
   d3.json("https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json")
@@ -365,7 +368,7 @@ Promise.all([
 .catch(err=>{
   document.querySelector("main").innerHTML=`
   <div style="padding:3rem;font-family:var(--font);color:var(--muted);max-width:600px">
-    <p style="color:var(--red);font-size:1.1rem;margin-bottom:1rem">Podaci nisu pronađeni</p>
+    <p style="color:var(--red);font-size:1.1rem;margin-bottom:1rem">⚠ Podaci nisu pronađeni</p>
     <ol style="line-height:2.2;padding-left:1.2rem">
       <li>Preuzmi CSV fajlove s Kagglea (results, races, drivers, constructors, driver_standings, <b>constructor_standings</b>)</li>
       <li>Stavi u isti folder s <code>obradaPodataka.py</code></li>
@@ -377,35 +380,39 @@ Promise.all([
   </div>`;
 });
 
-// Inicijalizacija - popunjavanje kontrola i povezivanje dogadaja.
+// ── BOOT ────────────────────────────────────────────────
 function boot(){
   const yrs = D.years;
 
+  // G1
   fillY("#g1yf","#g1yt",yrs);
   fillDrv("#g1ca","#g1cb",D.top_drivers);
   on("#g1yf","change",g1); on("#g1yt","change",g1);
   on("#g1cmp","click",()=>{ cmpA=v("#g1ca"); cmpB=v("#g1cb"); cmpOn=!!(cmpA&&cmpB); g1(); });
   on("#g1rst","click",()=>{ cmpOn=false; cmpA=cmpB=null; g1(); });
 
+  // G2
   fillY("#g2yf","#g2yt",yrs);
   on("#g2yf","change",g2); on("#g2yt","change",g2); on("#g2sort","change",g2);
 
+  // G3
   yrs.forEach(y=>d3.select("#g3y").append("option").attr("value",y).text(y));
   d3.select("#g3y").property("value","all");
   on("#g3m","change",g3); on("#g3y","change",g3);
 
+  // G4
   yrs.forEach(y=>d3.select("#g4y").append("option").attr("value",y).text(y));
   d3.select("#g4y").property("value",yrs[yrs.length-1]);
   on("#g4y","change",()=>{ g4focus=null; g4(); });
   on("#g4n","change",()=>{ g4focus=null; g4(); });
   on("#g4rst","click",()=>{ g4focus=null; g4(); });
 
+  // G5
   D.anim_years.forEach(y=>d3.select("#a5y").append("option").attr("value",y).text(y));
   d3.select("#a5y").property("value",D.anim_years[D.anim_years.length-1]);
   on("#a5y","change",()=>{ stopA(); g5(+v("#a5y")); });
   on("#a5spd","change",()=>{ if(aPlay){ pauseA(); startA(); }});
   on("#a5play","click",startA); on("#a5pause","click",pauseA); on("#a5rew","click",rewA);
-  // Klik na traku napretka premjesta animaciju na odgovarajuce kolo.
   d3.select("#a5prog").on("click",function(e){
     const p=(e.clientX-this.getBoundingClientRect().left)/this.getBoundingClientRect().width;
     aIdx=Math.round(p*(aRounds.length-1)); window._rnd(aIdx);
@@ -416,17 +423,14 @@ function boot(){
 
 function on(sel,ev,fn){ d3.select(sel).on(ev,fn); }
 function v(sel){ return d3.select(sel).property("value"); }
-// Popunjavanje dvaju izbornika godina (od/do).
 function fillY(a,b,yrs){
   [a,b].forEach((s,i)=>{ const el=d3.select(s); yrs.forEach(y=>el.append("option").attr("value",y).text(y)); el.property("value",i===0?yrs[0]:yrs[yrs.length-1]); });
 }
-// Popunjavanje izbornika vozaca za usporedbu.
 function fillDrv(a,b,drvs){
   [a,b].forEach((s,i)=>{ const el=d3.select(s); el.append("option").attr("value","").text("— odaberi —"); drvs.forEach(d=>el.append("option").attr("value",d).text(d)); el.property("value",i===0?drvs[0]:drvs[1]||drvs[0]); });
 }
 
-// Graf 1: linijski graf bodova vozaca po sezoni.
-// Tehnika linijskog grafa: https://d3-graph-gallery.com/line.html
+// ── G1: line chart ──────────────────────────────────────
 function g1(){
   const yf=+v("#g1yf"), yt=+v("#g1yt");
   const yrs=D.years.filter(y=>y>=yf&&y<=yt);
@@ -438,31 +442,27 @@ function g1(){
   const svg=d3.select("#c1").append("svg").attr("width",w+m.l+m.r).attr("height",h+m.t+m.b)
     .append("g").attr("transform",`translate(${m.l},${m.t})`);
 
+  // Boje vozača prema poznatim timskim bojama
   const colMap = {}; drvs.forEach((d,i) => colMap[d] = driverColor(d,i));
   const col = name => colMap[name] || PAL[drvs.indexOf(name) % PAL.length];
-  // Linearne skale za obje osi: https://d3js.org/d3-scale/linear
   const x=d3.scaleLinear().domain([d3.min(yrs),d3.max(yrs)]).range([0,w]);
   const allP=drvs.flatMap(d=>yrs.map(y=>D.driver_points_season[d]?.[y]??0));
   const y=d3.scaleLinear().domain([0,d3.max(allP)*1.06]).range([h,0]);
 
   svg.append("g").attr("class","grid").call(d3.axisLeft(y).tickSize(-w).tickFormat("").ticks(5));
-  // Osi grafa: https://d3js.org/d3-axis
   svg.append("g").attr("class","axis").attr("transform",`translate(0,${h})`).call(d3.axisBottom(x).tickFormat(d3.format("d")).ticks(Math.min(yrs.length,12)));
   svg.append("g").attr("class","axis").call(d3.axisLeft(y).ticks(5).tickFormat(fmt));
 
-  // Generator linije s monotonom interpolacijom: https://d3js.org/d3-shape/line
   const line=d3.line().defined(d=>d[1]!=null).x(d=>x(d[0])).y(d=>y(d[1])).curve(d3.curveMonotoneX);
 
   drvs.forEach(drv=>{
     if(hidden.has(drv)) return;
-    // Usporedba: odabrani vozaci se isticu, ostali se prigusuju.
     const isCmp=cmpOn&&(drv===cmpA||drv===cmpB);
     const isDim=cmpOn&&!isCmp;
     const pts=yrs.map(yr=>[yr,D.driver_points_season[drv]?.[yr]??null]);
     const g=svg.append("g");
     g.append("path").datum(pts).attr("fill","none").attr("stroke",col(drv))
       .attr("stroke-width",isCmp?3:isDim?.5:1.8).attr("opacity",isDim?.15:1).attr("d",line);
-    // Enter/Update/Exit obrazac putem selection.join: https://d3js.org/d3-selection/joining
     g.selectAll("circle").data(pts.filter(p=>p[1]!=null))
       .join(
         e=>e.append("circle").attr("cx",d=>x(d[0])).attr("cy",d=>y(d[1])).attr("r",0)
@@ -472,7 +472,7 @@ function g1(){
       )
       .on("mouseover",(e,d)=>show(`<b>${drv}</b><span class="tr"><span>${d[0]}</span><span class="tv">${fmt(d[1])} bod.</span></span>`,e))
       .on("mousemove",mv).on("mouseleave",hide);
-    // Oznaka prezimena na zadnjoj tocki linije.
+    // etiketa na zadnjoj točki
     const last=pts.filter(p=>p[1]!=null).at(-1);
     if(last && !isDim){
       svg.append("text").attr("x",x(last[0])+8).attr("y",y(last[1])).attr("dy","0.35em")
@@ -481,7 +481,6 @@ function g1(){
     }
   });
 
-  // Legenda - klik prikazuje/skriva liniju vozaca.
   const leg=d3.select("#l1"); leg.selectAll("*").remove();
   drvs.forEach(drv=>{
     const it=leg.append("div").attr("class","li"+(hidden.has(drv)?" dim":""))
@@ -491,9 +490,7 @@ function g1(){
   });
 }
 
-// Graf 2: grupirani stupcasti graf pobjeda konstruktora.
-// Tehnika grupiranog stupcastog grafa (scaleBand unutar scaleBand):
-// https://d3-graph-gallery.com/graph/barplot_grouped_basicWide.html
+// ── G2: bar chart ───────────────────────────────────────
 function g2(){
   const yf=+v("#g2yf"), yt=+v("#g2yt"), sort=v("#g2sort");
   const yrs=D.years.filter(y=>y>=yf&&y<=yt);
@@ -504,7 +501,6 @@ function g2(){
   const svg=d3.select("#c2").append("svg").attr("width",w+m.l+m.r).attr("height",h+m.t+m.b)
     .append("g").attr("transform",`translate(${m.l},${m.t})`);
 
-  // Sortiranje konstruktora prema odabranom kriteriju.
   let cs=[...D.top_constructors];
   if(sort==="wins") cs.sort((a,b)=>yrs.reduce((s,y)=>s+(D.constructor_wins[b]?.[y]??0),0)-yrs.reduce((s,y)=>s+(D.constructor_wins[a]?.[y]??0),0));
   else if(sort==="alpha") cs.sort();
@@ -514,10 +510,9 @@ function g2(){
     return lb-la;
   });
 
+  // Boje timova prema poznatim F1 bojama
   const colMap2 = {}; cs.forEach((c,i) => colMap2[c] = teamColor(c,i));
   const col = name => colMap2[name];
-  // x0 = vanjska skala (godine), x1 = unutarnja skala (konstruktori u grupi).
-  // scaleBand: https://d3js.org/d3-scale/band
   const x0=d3.scaleBand().domain(yrs).range([0,w]).padding(.07);
   const x1=d3.scaleBand().domain(cs).range([0,x0.bandwidth()]).padding(.04);
   const mx=d3.max(yrs,yr=>d3.sum(cs,c=>D.constructor_wins[c]?.[yr]??0))||1;
@@ -527,7 +522,6 @@ function g2(){
   svg.append("g").attr("class","axis").attr("transform",`translate(0,${h})`).call(d3.axisBottom(x0).tickFormat(d3.format("d"))).selectAll("text").style("font-size","9px").attr("transform","rotate(-40)").style("text-anchor","end");
   svg.append("g").attr("class","axis").call(d3.axisLeft(y).ticks(4));
 
-  // Grupa stupaca po godini; unutar grupe Enter/Update/Exit po konstruktoru.
   svg.selectAll(".yg").data(yrs).join("g").attr("class","yg").attr("transform",yr=>`translate(${x0(yr)},0)`)
     .each(function(yr){
       d3.select(this).selectAll("rect").data(cs.map(c=>({c,w:D.constructor_wins[c]?.[yr]??0,yr})))
@@ -544,12 +538,9 @@ function g2(){
   cs.forEach(c=>{ const it=leg.append("div").attr("class","li"); it.append("div").attr("class","ls").style("background",col(c)).style("height","2px"); it.append("span").text(c); });
 }
 
-// Preslikavanje ISO 3166-1 numerickog koda (iz TopoJSON-a) na alpha-3 kod
-// koji koristi pripremljeni JSON. https://en.wikipedia.org/wiki/ISO_3166-1_numeric
+// ── G3: choropleth ──────────────────────────────────────
 const NUM_A3={4:"AFG",8:"ALB",12:"DZA",24:"AGO",32:"ARG",36:"AUS",40:"AUT",50:"BGD",56:"BEL",68:"BOL",76:"BRA",100:"BGR",124:"CAN",144:"LKA",152:"CHL",156:"CHN",170:"COL",191:"HRV",196:"CYP",203:"CZE",208:"DNK",218:"ECU",818:"EGY",231:"ETH",246:"FIN",250:"FRA",276:"DEU",288:"GHA",300:"GRC",320:"GTM",340:"HND",348:"HUN",356:"IND",360:"IDN",364:"IRN",368:"IRQ",372:"IRL",376:"ISR",380:"ITA",392:"JPN",398:"KAZ",404:"KEN",410:"KOR",414:"KWT",422:"LBN",434:"LBY",484:"MEX",504:"MAR",516:"NAM",528:"NLD",554:"NZL",566:"NGA",578:"NOR",586:"PAK",604:"PER",616:"POL",620:"PRT",634:"QAT",642:"ROU",643:"RUS",682:"SAU",710:"ZAF",724:"ESP",752:"SWE",756:"CHE",764:"THA",788:"TUN",792:"TUR",804:"UKR",784:"ARE",826:"GBR",840:"USA",858:"URY",862:"VEN",704:"VNM",716:"ZWE",492:"MCO",702:"SGP",458:"MYS",688:"SRB"};
 
-// Graf 3: choropleth karta statistika po drzavama.
-// Tehnika choropleth karte: https://d3-graph-gallery.com/choropleth.html
 function g3(){
   const metric=v("#g3m"), yr=v("#g3y");
   d3.select("#c3").selectAll("*").remove();
@@ -561,14 +552,11 @@ function g3(){
   const svg=d3.select("#c3").append("svg").attr("width",W2).attr("height",mapH).style("border-radius","4px");
   svg.append("rect").attr("width",W2).attr("height",mapH).attr("fill","#0d1420").attr("rx",4);
 
-  // Geografska projekcija (Natural Earth): https://d3js.org/d3-geo/projection
   const proj=d3.geoNaturalEarth1().scale(W2/6.28).translate([W2/2,mapH/2]);
-  // Generator SVG putanje iz GeoJSON-a: https://d3js.org/d3-geo/path
   const path=d3.geoPath().projection(proj);
-  // topojson.feature dekodira TopoJSON u GeoJSON: https://github.com/topojson/topojson-client#feature
   const ctries=topojson.feature(W,W.objects.countries);
 
-  // topojson.mesh crta samo granice izmedu drzava (bez duplog iscrtavanja).
+  // ocean granica
   svg.append("path").datum(topojson.mesh(W,W.objects.countries,(a,b)=>a!==b))
     .attr("fill","none").attr("stroke","rgba(255,255,255,.05)").attr("stroke-width",.3).attr("d",path);
 
@@ -576,8 +564,6 @@ function g3(){
   const md=src[metric]||{};
   const mx=d3.max(Object.values(md))||1;
 
-  // Logaritamska sekvencijalna skala boja - jer dominacija pojedinih drzava
-  // (npr. GBR) inace skriva razlike kod ostalih. https://d3js.org/d3-scale/sequential
   const col=d3.scaleSequentialLog().domain([1,mx]).interpolator(d3.interpolate("#1c2230","#e10600")).clamp(true);
 
   svg.selectAll("path.country").data(ctries.features).join("path")
@@ -592,7 +578,7 @@ function g3(){
     })
     .on("mousemove",mv).on("mouseleave",hide);
 
-  // Gradijentna legenda skale boja (SVG linearni gradijent).
+  // gradijentna legenda
   const lw=Math.min(260,W2-80);
   const ls=d3.select("#l3").append("svg").attr("width",lw+50).attr("height",28);
   const defs=ls.append("defs");
@@ -603,8 +589,7 @@ function g3(){
   ls.append("text").attr("x",28+lw).attr("y",22).style("fill","var(--muted)").style("font-size","10px").style("font-family","var(--font)").attr("text-anchor","end").text(fmt(mx));
 }
 
-// Graf 4: bump chart promjene poretka konstruktora kroz kola sezone.
-// Koncept bump/ranking charta: https://observablehq.com/@d3/bump-chart
+// ── G4: bump chart ──────────────────────────────────────
 function g4(){
   const yr=v("#g4y"), topN=+v("#g4n");
   d3.select("#c4").selectAll("*").remove();
@@ -613,11 +598,19 @@ function g4(){
   const rows=D.bump_data[yr]||[];
   if(!rows.length){ d3.select("#c4").append("p").style("color","var(--muted)").style("padding","1.5rem 0").text("Nema podataka."); return; }
 
-  // Top N konstruktora prema zavrsnom poretku (zadnje kolo sezone).
   const rnds=[...new Set(rows.map(r=>r.round))].sort((a,b)=>a-b);
   const last=rnds.at(-1);
   const tops=rows.filter(r=>r.round===last).sort((a,b)=>a.rank-b.rank).slice(0,topN).map(r=>r.constructor);
   const fr=rows.filter(r=>tops.includes(r.constructor));
+
+  const rankByRound = new Map();   
+  rnds.forEach(r=>{
+    const inRound = fr.filter(x=>x.round===r).sort((a,b)=>a.rank-b.rank);
+    const m2 = new Map();
+    inRound.forEach((x,i)=> m2.set(x.constructor, i+1));
+    rankByRound.set(r, m2);
+  });
+  const localRank=(c,r)=> rankByRound.get(r)?.get(c);
 
   const W2=cw("c4"), m={t:16,r:110,b:36,l:22};
   const w=Math.max(W2,500)-m.l-m.r;
@@ -626,19 +619,19 @@ function g4(){
   const svg=d3.select("#c4").append("svg").attr("width",w+m.l+m.r).attr("height",h+m.t+m.b)
     .append("g").attr("transform",`translate(${m.l},${m.t})`);
 
+  // Boje timova prema poznatim F1 bojama
   const colMap4 = {}; tops.forEach((c,i) => colMap4[c] = teamColor(c,i));
   const col = name => colMap4[name];
-  // scalePoint - diskretne tocke za kola (x) i pozicije (y): https://d3js.org/d3-scale/point
   const x=d3.scalePoint().domain(rnds).range([0,w]).padding(.08);
   const y=d3.scalePoint().domain(d3.range(1,topN+1)).range([0,h]).padding(.2);
 
-  // Vodoravne vodilice po pozicijama.
+  // vodoravne vodilice
   d3.range(1,topN+1).forEach(r=>{
     svg.append("line").attr("x1",0).attr("x2",w).attr("y1",y(r)).attr("y2",y(r))
       .attr("stroke","var(--line)").attr("stroke-dasharray","2 5").attr("stroke-opacity",.5);
   });
 
-  // Vertikalne linije po kolima.
+  // vertikalne linije na kolima
   svg.append("g").attr("class","grid").selectAll("line").data(rnds).join("line")
     .attr("x1",d=>x(d)).attr("x2",d=>x(d)).attr("y1",0).attr("y2",h)
     .attr("stroke","var(--line)").attr("stroke-opacity",.3);
@@ -648,12 +641,10 @@ function g4(){
   svg.append("g").attr("class","axis").attr("transform","translate(-4,0)")
     .call(d3.axisLeft(y).tickFormat(d=>`P${d}`).tickSize(0));
 
-  // Catmull-Rom interpolacija za glatke krivulje izmedu kola: https://d3js.org/d3-shape/curve
   const lg=d3.line().defined(Boolean).x(d=>x(d.round)).y(d=>y(d.rank)).curve(d3.curveCatmullRom.alpha(.5));
 
   tops.forEach(c=>{
-    const cd=rnds.map(r=>{ const f=fr.find(x=>x.constructor===c&&x.round===r); return f?{round:r,rank:f.rank,points:f.points,constructor:c}:null; }).filter(Boolean);
-    // Fokus: klik na liniju istice jedan tim, ostali se prigusuju.
+    const cd=rnds.map(r=>{ const f=fr.find(x=>x.constructor===c&&x.round===r); return f?{round:r,rank:localRank(c,r),points:f.points,constructor:c}:null; }).filter(d=>d&&d.rank!=null);
     const foc=g4focus===null||g4focus===c;
     const op=foc?1:.1, sw=g4focus===c?3.5:foc?2.2:1.2;
     const key=c.replace(/\W/g,"_");
@@ -675,7 +666,6 @@ function g4(){
     .on("mouseover",(e,d)=>show(`<b>${d.constructor}</b><span class="tr"><span>Kolo ${d.round}</span><span class="tv">P${d.rank} · ${fmt(d.points)} bod.</span></span>`,e))
     .on("mousemove",mv).on("mouseleave",hide);
 
-    // Naziv tima na kraju zadnje tocke.
     const lp=cd.at(-1);
     if(lp) svg.append("text").attr("class","bump-lbl").attr("x",x(lp.round)+8).attr("y",y(lp.rank))
       .attr("fill",col(c)).attr("opacity",foc?1:.1)
@@ -692,8 +682,7 @@ function g4(){
   });
 }
 
-// Graf 5: animirani horizontalni stupcasti graf (bar chart race).
-// Koncept: https://observablehq.com/@d3/bar-chart-race-explained
+// ── G5: animation ───────────────────────────────────────
 function g5(yr){
   stopA();
   aRounds=D.animation_data[String(yr)]||[];
@@ -708,7 +697,6 @@ function g5(yr){
   const allD=[...new Set(aRounds.flatMap(r=>r.standings.map(s=>s.driver)))];
   const col=d3.scaleOrdinal().domain(allD).range([...PAL,"#4ecdc4","#45b7d1","#96ceb4","#ffeaa7","#dda0dd"]);
 
-  // Iscrtavanje jednog kola. Poziva se pri svakom koraku animacije.
   function rnd(i){
     if(!aRounds[i]) return;
     const r=aRounds[i], data=r.standings.slice(0,10);
@@ -721,9 +709,6 @@ function g5(yr){
     ya.transition().duration(360).call(d3.axisLeft(ys).tickSize(0))
       .selectAll("text").style("fill","var(--text)").style("font-family","var(--font)").style("font-size","12px");
 
-    // Kljuc d=>d.driver osigurava "object constancy" - isti vozac ostaje isti
-    // element izmedu kola, pa tranzicija glatko pomice stupac umjesto presretanja.
-    // https://bost.ocks.org/mike/constancy/
     svg.selectAll("rect.ab").data(data,d=>d.driver).join(
       e=>e.append("rect").attr("class","ab").attr("y",d=>ys(d.driver)).attr("height",ys.bandwidth()).attr("x",0).attr("width",0).attr("rx",2).attr("fill",d=>col(d.driver)).attr("opacity",.85).call(e=>e.transition().duration(360).attr("width",d=>xs(+d.points))),
       u=>u.call(u=>u.transition().duration(360).attr("y",d=>ys(d.driver)).attr("height",ys.bandwidth()).attr("width",d=>xs(+d.points)).attr("fill",d=>col(d.driver))),
@@ -743,7 +728,6 @@ function g5(yr){
   window._rnd=rnd;
 }
 
-// Kontrole animacije. setInterval automatski prelazi kroz kola sezone.
 function startA(){
   if(aPlay) return; aPlay=true;
   const spd=+v("#a5spd");
@@ -753,7 +737,7 @@ function pauseA(){ aPlay=false; if(aTimer){ clearInterval(aTimer); aTimer=null; 
 function stopA(){ pauseA(); aIdx=0; }
 function rewA(){ stopA(); if(aRounds.length) window._rnd(0); d3.select("#a5fill").style("width","0%"); }
 
-// Responzivnost - ponovno iscrtavanje svih grafova nakon promjene velicine prozora.
+// ── RESIZE ──────────────────────────────────────────────
 let rsz;
 window.addEventListener("resize",()=>{
   clearTimeout(rsz);
